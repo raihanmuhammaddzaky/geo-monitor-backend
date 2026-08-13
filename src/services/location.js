@@ -15,7 +15,8 @@ export const getApprovedLocations = async () => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))
@@ -35,7 +36,8 @@ export const getAllLocations = async () => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))
@@ -54,7 +56,8 @@ export const getPendingLocations = async () => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))
@@ -74,16 +77,17 @@ export const createLocation = async (data) => {
     longitude: data.longitude,
     imagePath: data.imagePath,
     status: 'pending',
-    userId: parseInt(data.userId)
+    userId: parseInt(data.userId),
+    city: data.city,
   }).returning();
 
   return newLocation[0];
 };
 
-export const updateLocationStatus = async (id, status) => {
+export const updateLocationStatus = async (slug, status) => {
   const updatedLocation = await db.update(locations)
     .set({ status })
-    .where(eq(locations.id, parseInt(id)))
+    .where(eq(locations.slug, slug))
     .returning();
 
   return updatedLocation[0];
@@ -101,7 +105,8 @@ export const getLocationBySlug = async (slug) => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))
@@ -123,7 +128,8 @@ export const getLocationsByCategory = async (categoryId) => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))
@@ -182,7 +188,8 @@ export const searchLocationsService = async (name, categoryId, city) => {
     status: locations.status,
     categoryName: locationCategories.name,
     reporterName: users.name,
-    createdAt: locations.createdAt
+    createdAt: locations.createdAt,
+    city: locations.city,
   })
     .from(locations)
     .leftJoin(locationCategories, eq(locations.categoryId, locationCategories.id))

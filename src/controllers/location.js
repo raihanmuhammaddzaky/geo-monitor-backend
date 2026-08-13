@@ -88,14 +88,14 @@ export const create = async (req, res) => {
 
 export const updateStatus = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { slug } = req.params;
     const { status } = req.body;
 
     if (!['approved', 'rejected'].includes(status)) {
       return formatResponse(res, 400, 'error', 'Status tidak valid');
     }
 
-    const updatedLocation = await updateLocationStatus(parseInt(id), status);
+    const updatedLocation = await updateLocationStatus(slug, status);
     if (!updatedLocation) {
       return formatResponse(res, 404, 'error', 'Titik lokasi tidak ditemukan');
     }
